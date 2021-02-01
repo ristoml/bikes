@@ -1,16 +1,16 @@
 <template>
-  <div id="app">       
-    <BikeStats/>
+  <div id="app">   
+    <BikeMap/>
   </div>
 </template>
 
 <script>
-import BikeStats from './components/BikeStats.vue'
+import BikeMap from './components/BikeMap.vue'
 
 export default {
   name: 'App',
-  components: {    
-    BikeStats
+  components: {        
+    BikeMap
   }
 }
 </script>
