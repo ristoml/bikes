@@ -5,7 +5,6 @@
       <p>Click on a marker to see more information</p> 
     </div>
     <l-map      
-      :v-if="bikelist && bikelist.network.stations"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
@@ -17,7 +16,7 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-marker v-for="item in bikelist.network.stations" :key="item.message" :lat-lng="[item.latitude, item.longitude]">
+      <l-marker v-for="item in bikelist" :key="item.message" :lat-lng="[item.latitude, item.longitude]">
         <l-popup>
           <div>
             Name: {{ item.name }}<br>
@@ -75,7 +74,7 @@ export default {
     axios.get('http://api.citybik.es/v2/networks/citybikes-helsinki')
     .then(function (response) {
       //console.log(response)
-      self.bikelist = response.data
+      self.bikelist = response.data.network.stations
       console.log(self.bikelist)
     })
     .catch(function (error) {
