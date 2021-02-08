@@ -84,7 +84,7 @@ export default {
     .catch(function (error) {
       console.log(error)
     })
-    axios.get('https://api.openweathermap.org/data/2.5/weather?id=658225&appid=fb7bb42a7f468dca1c33c92fcf62398b&units=metric')
+    axios.get('https://api.openweathermap.org/data/2.5/weather?id=658225&appid=// APP ID  \\&units=metric')
     .then(function (response) {           
       self.weatherIcon = response.data.weather[0]
       self.weatherTemp = Math.round(response.data.main.temp)      
