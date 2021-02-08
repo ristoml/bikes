@@ -1,8 +1,12 @@
 <template> 
 <div style="height: 500px; width: 100%">
     <div style="height: 200px overflow: auto;">
-      <h1>Citybikes in Uusimaa</h1>
-      <p>Click on a marker to see more information</p> 
+      <h1>Citybikes in Uusimaa</h1>      
+      <div id="weather">
+        <img :src="icon" alt="description" style="width: 50px"><br>
+        <strong>{{ weatherTemp }}&deg;C</strong><br>
+        {{ weatherIcon.description }}
+      </div>
     </div>
     <l-map      
       :zoom="zoom"
@@ -55,31 +59,41 @@ export default {
   data() {
       return {
         bikelist: [],
+        weatherIcon: [],
+        weatherTemp: [],
+        icon: '',
         zoom: 14,
         center: latLng(60.1699, 24.9384),
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',                
         currentZoom: 11.5,
-        currentCenter: latLng(47.41322, -1.219482),
-        showParagraph: false,
+        currentCenter: latLng(47.41322, -1.219482),        
         mapOptions: {
           zoomSnap: 0.5
-        },
-        showMap: true        
+        } 
     };
   },
   mounted() {
     var self = this
     axios.get('http://api.citybik.es/v2/networks/citybikes-helsinki')
-    .then(function (response) {
-      //console.log(response)
+    .then(function (response) {           
       self.bikelist = response.data.network.stations
       console.log(self.bikelist)
     })
     .catch(function (error) {
       console.log(error)
-    });    
+    })
+    axios.get('https://api.openweathermap.org/data/2.5/weather?id=658225&appid=fb7bb42a7f468dca1c33c92fcf62398b&units=metric')
+    .then(function (response) {           
+      self.weatherIcon = response.data.weather[0]
+      self.weatherTemp = Math.round(response.data.main.temp)      
+      self.icon = 'http://openweathermap.org/img/wn/'+self.weatherIcon.icon+'@2x.png'      
+      console.log(self.weatherIcon)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
   },  
   methods: {
     stationInfo(itemid) {
@@ -97,53 +111,10 @@ export default {
 
 <style scoped>
 h1 {
-  margin: 40px 0 0;
+  margin: 0px 0 0;
   text-align: center;
 }
-ul {
-  list-style-type: none;
-  padding: 10;
+#weather {
+  text-align: right;
 }
-li {
-  display: table-grid;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-.dropbtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
 </style>
