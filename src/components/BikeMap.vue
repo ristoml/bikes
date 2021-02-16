@@ -25,10 +25,11 @@
           <div>
             Name: {{ item.name }}<br>
             Free bikes: {{ item.free_bikes }}<br>
-            Free slots: {{ item.empty_slots }}            
+            Free slots: {{ item.empty_slots }}
           </div>
         </l-popup>
-      </l-marker>      
+      </l-marker>
+      <l-routing-machine :waypoints="waypoints"/>      
     </l-map>
   </div>
 </template>
@@ -37,7 +38,9 @@
 import axios from "axios";
 import { latLng } from "leaflet";
 import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
-import { Icon } from 'leaflet';
+import { Icon } from "leaflet";
+import LRoutingMachine from './LRoutingMachine.vue';
+
 
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -51,7 +54,8 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    LPopup    
+    LPopup,
+    LRoutingMachine    
   },
   props: {
     msg: String,    
@@ -71,7 +75,11 @@ export default {
         currentCenter: latLng(47.41322, -1.219482),        
         mapOptions: {
           zoomSnap: 0.5
-        } 
+        },
+        waypoints: [
+        { lat: 60.1706244510591, lng: 24.941422068877223 },
+        { lat: 60.156414040686236, lng: 24.921236982277836 }
+      ] 
     };
   },
   mounted() {
@@ -84,7 +92,7 @@ export default {
     .catch(function (error) {
       console.log(error)
     })
-    axios.get('https://api.openweathermap.org/data/2.5/weather?id=658225&appid=fb7bb42a7f468dca1c33c92fcf62398b&units=metric')
+    axios.get('https://api.openweathermap.org/data/2.5/weather?id=658225&appid=// APP ID  \\&units=metric')
     .then(function (response) {           
       self.weatherIcon = response.data.weather[0]
       self.weatherTemp = Math.round(response.data.main.temp)      
@@ -93,7 +101,7 @@ export default {
     })
     .catch(function (error) {
       console.log(error)
-    })
+    })    
   },  
   methods: {
     stationInfo(itemid) {

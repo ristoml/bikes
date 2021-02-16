@@ -1,6 +1,6 @@
 <template>
   <div id="app">   
-    <BikeMap/>
+    <bike-map/>    
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import BikeMap from './components/BikeMap.vue'
 export default {
   name: 'App',
   components: {        
-    BikeMap
+    BikeMap    
   }
 }
 </script>
